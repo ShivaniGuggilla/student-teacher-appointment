@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin-Manage Teachers</title>
+  <style>
+    body { background: #121212; color: white; font-family: Arial; padding: 2rem; }
+    form, table { background: #1e1e1e; padding: 1rem; border-radius: 10px; margin-bottom: 2rem; }
+    input, textarea, button { width: 100%; margin-bottom: 1rem; padding: 0.5rem; border-radius: 6px; border: none; background: #2c2c2c; color: white; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; border: 1px solid #444; text-align: left; }
+    button { background: dodgerblue; cursor: pointer; }
+    button:hover { background:chartreuse; }
+    .action-btns button { margin-right: 5px; }
+  </style>
+</head>
+<body>
+
+  <h1>Admin - Add / Update / Delete Teachers</h1>
+
+  <form id="teacherForm">
+    <input type="text" id="name" placeholder="Name" required>
+    <input type="text" id="department" placeholder="Department" required>
+    <input type="text" id="subject" placeholder="Subject" required>
+    <button type="submit">Add Teacher</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Subject</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="teacherTable"></tbody>
+  </table>
+
+  <script>
+    const teacherForm = document.getElementById("teacherForm");
+    const teacherTable = document.getElementById("teacherTable");
+
+    let teachers = JSON.parse(localStorage.getItem("teachers")) || [];
+    let editingIndex = -1;
+
+    function saveTeachers() {
+      localStorage.setItem("teachers", JSON.stringify(teachers));
+    }
+
+    function renderTeachers() {
+      teacherTable.innerHTML = "";
+      teachers.forEach((teacher, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${teacher.name}</td>
+          <td>${teacher.department}</td>
+          <td>${teacher.subject}</td>
+          <td class="action-btns">
+            <button onclick="editTeacher(${index})">Edit</button>
+            <button onclick="deleteTeacher(${index})" style="background: #e74c3c;">Delete</button>
+          </td>
+        `;
+        teacherTable.appendChild(row);
+      });
+    }
+
+    teacherForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const department = document.getElementById("department").value;
+      const subject = document.getElementById("subject").value;
+
+      if (editingIndex === -1) {
+        // Add teacher
+        teachers.push({ name, department, subject });
+      } else {
+        // Update teacher
+        teachers[editingIndex] = { name, department, subject };
+        editingIndex = -1;
+        teacherForm.querySelector("button").textContent = "Add Teacher";
+      }
+
+      saveTeachers();
+      renderTeachers();
+      teacherForm.reset();
+    });
+
+    function editTeacher(index) {
+      const t = teachers[index];
+      document.getElementById("name").value = t.name;
+      document.getElementById("department").value = t.department;
+      document.getElementById("subject").value = t.subject;
+      editingIndex = index;
+      teacherForm.querySelector("button").textContent = "Update Teacher";
+    }
+
+    function deleteTeacher(index) {
+      if (confirm("Are you sure you want to delete this teacher?")) {
+        teachers.splice(index, 1);
+        saveTeachers();
+        renderTeachers();
+      }
+    }
+
+    // Initial render
+    renderTeachers();
+  </script>
+
+</body>
+</html>

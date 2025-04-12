@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin-Approve Appointments</title>
+  <style>
+    body { background: #121212; color: white; font-family: Arial; padding: 2rem; }
+    table { width: 100%; border-collapse: collapse; background: #1e1e1e; margin-top: 2rem; }
+    th, td { padding: 10px; border: 1px solid #444; }
+    button { padding: 5px 10px; background: dodgerblue; border: none; border-radius: 5px; color: white; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h1>Admin - Pending Appointments</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Reason</th>
+        <th>Teacher</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="appointmentTable"></tbody>
+  </table>
+
+  <script>
+    const appointmentTable = document.getElementById("appointmentTable");
+    let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+
+    function renderAppointments() {
+      appointmentTable.innerHTML = "";
+      appointments.forEach((app, index) => {
+        if (app.status === "Pending") {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${app.studentName}</td>
+            <td>${app.date}</td>
+            <td>${app.time}</td>
+            <td>${app.reason}</td>
+            <td>${app.assignedTeacher}</td>
+            <td>${app.status}</td>
+            <td><button onclick="approve(${index})">Approve</button></td>
+          `;
+          appointmentTable.appendChild(row);
+        }
+      });
+
+      if (appointmentTable.innerHTML === "") {
+        appointmentTable.innerHTML = "<tr><td colspan='7'>No pending appointments</td></tr>";
+      }
+    }
+
+    function approve(index) {
+      appointments[index].status = "Assigned";
+      localStorage.setItem("appointments", JSON.stringify(appointments));
+      renderAppointments();
+    }
+
+    renderAppointments();
+  </script>
+
+</body>
+</html>

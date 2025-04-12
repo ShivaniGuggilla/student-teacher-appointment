@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher Dashboard</title>
+  <style>
+    body { background: #121212; color: white; font-family: Arial; padding: 2rem; }
+    h1, h2 { color: #00cec9; }
+    input, textarea, select, button {
+      width: 100%; margin-bottom: 1rem; padding: 0.5rem;
+      border: none; border-radius: 6px; background: #2c2c2c; color: white;
+    }
+    button { background:dodgerblue; cursor: pointer; }
+    button:hover { background: dodgerblue; }
+    table {
+      width: 100%; background: #1e1e1e; border-collapse: collapse;
+      margin-top: 2rem; color: white;
+    }
+    th, td {
+      padding: 10px; border: 1px solid #444; text-align: left;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <div id="loginSection">
+    <h1>Teacher Login</h1>
+    <input type="text" id="loginName" placeholder="Enter your name" required>
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div id="dashboard" class="hidden">
+    <h1>Welcome, <span id="teacherName"></span></h1>
+    <button onclick="logout()">Logout</button>
+
+    <h2>Schedule New Appointment</h2>
+    <form id="scheduleForm">
+      <input type="text" id="studentName" placeholder="Student Name" required>
+      <input type="date" id="date" required>
+      <input type="time" id="time" required>
+      <textarea id="reason" placeholder="Reason" required></textarea>
+      <button type="submit">Schedule</button>
+    </form>
+
+    <h2>All Appointments</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Student</th><th>Date</th><th>Time</th><th>Reason</th><th>Status</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="appointmentsTable"></tbody>
+    </table>
+
+    <h2>Messages</h2>
+    <div id="messagesBox"></div>
+  </div>
+
+  <script>
+    const loginSection = document.getElementById("loginSection");
+    const dashboard = document.getElementById("dashboard");
+    const teacherNameSpan = document.getElementById("teacherName");
+    const appointmentsTable = document.getElementById("appointmentsTable");
+    const messagesBox = document.getElementById("messagesBox");
+
+    let loggedInTeacher = localStorage.getItem("loggedInTeacher") || "";
+
+    function login() {
+      const name = document.getElementById("loginName").value.trim();
+      if (!name) return alert("Enter a valid name");
+      loggedInTeacher = name;
+      localStorage.setItem("loggedInTeacher", name);
+      initDashboard();
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedInTeacher");
+      location.reload();
+    }
+
+    function initDashboard() {
+      loginSection.classList.add("hidden");
+      dashboard.classList.remove("hidden");
+      teacherNameSpan.textContent = loggedInTeacher;
+      renderAppointments();
+      renderMessages();
+    }
+
+    document.getElementById("scheduleForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const newAppointment = {
+        id: Date.now(),
+        studentName: document.getElementById("studentName").value,
+        date: document.getElementById("date").value,
+        time: document.getElementById("time").value,
+        reason: document.getElementById("reason").value,
+        assignedTeacher: loggedInTeacher,
+        status: "Assigned"
+      };
+      const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+      appointments.push(newAppointment);
+      localStorage.setItem("appointments", JSON.stringify(appointments));
+      this.reset();
+      renderAppointments();
+    });
+
+    function renderAppointments() {
+      const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+      const filtered = appointments.filter(a => a.assignedTeacher === loggedInTeacher);
+      appointmentsTable.innerHTML = "";
+      filtered.forEach((a, index) => {
+        appointmentsTable.innerHTML += `
+          <tr>
+            <td>${a.studentName}</td>
+            <td>${a.date}</td>
+            <td>${a.time}</td>
+            <td>${a.reason}</td>
+            <td>${a.status}</td>
+            <td>
+              ${a.status !== "Cancelled" ? `<button onclick="cancelAppointment(${a.id})">Cancel</button>` : ""}
+              ${a.status !== "Approved" ? `<button onclick="approveAppointment(${a.id})">Approve</button>` : ""}
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function approveAppointment(id) {
+      const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+      const i = appointments.findIndex(a => a.id === id);
+      if (i !== -1) {
+        appointments[i].status = "Approved";
+        localStorage.setItem("appointments", JSON.stringify(appointments));
+        renderAppointments();
+      }
+    }
+
+    function cancelAppointment(id) {
+      const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+      const i = appointments.findIndex(a => a.id === id);
+      if (i !== -1) {
+        appointments[i].status = "Cancelled";
+        localStorage.setItem("appointments", JSON.stringify(appointments));
+        renderAppointments();
+      }
+    }
+
+    function renderMessages() {
+      const messages = JSON.parse(localStorage.getItem("messages")) || [];
+      const teacherMsgs = messages.filter(m => m.to === loggedInTeacher);
+      if (teacherMsgs.length === 0) {
+        messagesBox.innerHTML = "<p>No messages.</p>";
+      } else {
+        messagesBox.innerHTML = teacherMsgs.map(m =>
+          `<p><strong>${m.from}</strong>: ${m.message}</p>`
+        ).join("");
+      }
+    }
+
+    // Auto-login if already logged in
+    if (loggedInTeacher) initDashboard();
+  </script>
+</body>
+</html>

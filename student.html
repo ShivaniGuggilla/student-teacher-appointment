@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Book Appointment</title>
+  <style>
+    body { background: #121212; color: white; font-family: Arial; padding: 2rem; }
+    input, select, textarea, button { width: 100%; margin-bottom: 1rem; padding: 0.5rem; background: #2c2c2c; color: white; border: none; border-radius: 6px; }
+    button { background: dodgerblue; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h1>Student - Book Appointment</h1>
+
+  <form id="appointmentForm">
+    <input type="text" id="studentName" placeholder="Your Name" required>
+    <input type="date" id="date" required>
+    <input type="time" id="time" required>
+    <textarea id="reason" placeholder="Reason for appointment" required></textarea>
+    
+    <select id="teacherSelect" required>
+      <option value="">Select Teacher</option>
+    </select>
+
+    <button type="submit">Submit Appointment</button>
+  </form>
+
+  <script>
+    const teacherSelect = document.getElementById("teacherSelect");
+
+    // Load teachers from localStorage into dropdown
+    const teachers = JSON.parse(localStorage.getItem("teachers")) || [];
+    teachers.forEach(teacher => {
+      const opt = document.createElement("option");
+      opt.value = teacher.name;
+      opt.textContent = teacher.name;
+      teacherSelect.appendChild(opt);
+    });
+
+    // Appointment submit
+    document.getElementById("appointmentForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const appointment = {
+        id: Date.now(),
+        studentName: document.getElementById("studentName").value,
+        date: document.getElementById("date").value,
+        time: document.getElementById("time").value,
+        reason: document.getElementById("reason").value,
+        assignedTeacher: document.getElementById("teacherSelect").value,
+        status: "Pending"
+      };
+
+      const existing = JSON.parse(localStorage.getItem("appointments")) || [];
+      existing.push(appointment);
+      localStorage.setItem("appointments", JSON.stringify(existing));
+
+      alert("Appointment submitted!");
+      e.target.reset();
+    });
+  </script>
+
+</body>
+</html>
