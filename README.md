@@ -1,4 +1,4 @@
-## 🗓️ Student-Teacher Appointment Booking System
+![Screenshot (265)](https://github.com/user-attachments/assets/d103c254-cec9-4066-ac8a-768aff54bef5)## 🗓️ Student-Teacher Appointment Booking System
 A web-based application that allows students to book appointments with teachers, and provides admin functionalities to manage teacher profiles and approve appointments. Built using HTML, CSS, and JavaScript, with localStorage for data persistence.
 
 ## 🔧 Features
@@ -49,3 +49,26 @@ Open index.html in your browser.
 Select a role to navigate to its respective dashboard.
 
 Interact with forms to test functionality.
+## View
+
+![Screenshot (257)](https://github.com/user-attachments/assets/73ff26d2-0166-4f59-8ee9-66c9f9585f86)
+
+![Screenshot (258)](https://github.com/user-attachments/assets/f324e14c-36cd-4a34-967a-635b05c7c783)
+
+![Screenshot (259)](https://github.com/user-attachments/assets/efebeeb8-5867-441d-81ec-424eb1722792)
+
+![Screenshot (260)](https://github.com/user-attachments/assets/a90e31c2-af5a-4446-9e9a-496e4c92caf2)
+
+![Screenshot (261)](https://github.com/user-attachments/assets/976a8ed6-7851-4bfb-b69c-0d531c7fb3c7)
+
+![Screenshot (262)](https://github.com/user-attachments/assets/29c107f3-c02b-4d4f-9aac-afa7b552da43)
+
+![Screenshot (263)](https://github.com/user-attachments/assets/415a3f32-62d1-45e6-9b9f-fc353d7739e3)
+
+![Screenshot (264)](https://github.com/user-attachments/assets/40e4b30a-7537-4862-b3ce-e0166c413499)
+
+![Screenshot (265)](https://github.com/user-attachments/assets/3e5a3000-a575-42b1-9d0c-cbce87d90785)
+
+![Screenshot (266)](https://github.com/user-attachments/assets/61c90902-313d-4993-b78a-b3c1d0a821bb)
+
+![Uploading Screenshot (267).png…]()
