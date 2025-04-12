@@ -1,4 +1,4 @@
-![Screenshot (265)](https://github.com/user-attachments/assets/d103c254-cec9-4066-ac8a-768aff54bef5)## 🗓️ Student-Teacher Appointment Booking System
+## 🗓️ Student-Teacher Appointment Booking System
 A web-based application that allows students to book appointments with teachers, and provides admin functionalities to manage teacher profiles and approve appointments. Built using HTML, CSS, and JavaScript, with localStorage for data persistence.
 
 ## 🔧 Features
@@ -71,4 +71,4 @@ Interact with forms to test functionality.
 
 ![Screenshot (266)](https://github.com/user-attachments/assets/61c90902-313d-4993-b78a-b3c1d0a821bb)
 
-![Uploading Screenshot (267).png…]()
+![Screenshot (267)](https://github.com/user-attachments/assets/464280f3-e0a8-41d9-a519-b9b9cb47a3c5)
