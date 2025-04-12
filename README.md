@@ -2,20 +2,20 @@
 A web-based application that allows students to book appointments with teachers, and provides admin functionalities to manage teacher profiles and approve appointments. Built using HTML, CSS, and JavaScript, with localStorage for data persistence.
 
 ## 🔧 Features
-## 🔑 Login Portal
+# 🔑 Login Portal
 Login options for Admin, Student, and Teacher roles via a dropdown.
 
-## 👨‍🏫 Admin Panel
+# 👨‍🏫 Admin Panel
 Approve Appointments: View and approve pending appointment requests from students.
 
 Manage Teachers: Add, update, and delete teacher records.
 
-## 👩‍🎓 Student Interface
+# 👩‍🎓 Student Interface
 Book an appointment by selecting a teacher, specifying date/time, and providing a reason.
 
 Teachers are dynamically listed from admin entries.
 
-## 🧑‍🏫 Teacher Dashboard
+# 🧑‍🏫 Teacher Dashboard
 Login by name.
 
 Schedule new appointments manually.
@@ -24,7 +24,7 @@ View all appointments assigned to the teacher.
 
 View student messages (if messaging is integrated).
 
-## 🧱 Project Structure
+# 🧱 Project Structure
 
 📁 project-folder/
 ├── index.html                 # Main login selector (Admin/Student/Teacher)
